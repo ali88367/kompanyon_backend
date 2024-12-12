@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "552938282575",
+    "project_id": "kompanyonapp-c60f8",
+    "storage_bucket": "kompanyonapp-c60f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552938282575:android:909bf0416e49e14b6d943a",
+        "android_client_info": {
+          "package_name": "com.example.kompanyon_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkR0zSkfUN0byBXPVsT8zB68mOoDHohDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
