@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class SignupController extends GetxController {
   final TextEditingController retypasswordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   var isselectedsignup = "Signup".obs;
+  String? fcmToken = '';
 
   Future<void> handleSignUp(File? profileImage) async {
     final email = emailController.text.trim();
@@ -53,6 +55,9 @@ class SignupController extends GetxController {
           // Upload profile image to Firebase Storage
           profileImageUrl = await uploadProfileImage(user.uid, profileImage);
         }
+
+        fcmToken =  await FirebaseMessaging.instance.getToken();
+
         await _firestore.collection('userDetails').doc(user.uid).set({
           'name': name,
           'email': email,
@@ -61,6 +66,7 @@ class SignupController extends GetxController {
           'profileImageUrl': profileImageUrl,
           'role': selectedRole.value,
           'uid': user.uid,
+          'fcmToken': fcmToken, // Add the fcmToken here
 
         });
 

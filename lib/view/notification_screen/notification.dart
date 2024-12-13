@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kompanyon_app/const/color.dart';
-import 'package:kompanyon_app/const/image.dart';
-import 'package:kompanyon_app/widgets/custom_inter_text.dart';
-import 'package:kompanyon_app/widgets/custom_search.dart';
+import 'package:intl/intl.dart';
 
+import '../../widgets/custom_inter_text.dart';
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
 
@@ -14,25 +13,10 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen>
     with SingleTickerProviderStateMixin {
-  final List<Map<String, String>> items = [
-    {'date': '6/15/24', 'title': 'Pulse Survey', 'duration': '2 min'},
-    {'date': '6/15/24', 'title': 'Your Pathway', 'duration': '4 min'},
-    {
-      'date': '6/15/24',
-      'title': 'Upcoming Webinar: Leaders...',
-      'duration': '4 min'
-    },
-    {
-      'date': '6/15/24',
-      'title': 'Reflection: Your Pathway',
-      'duration': '3 min'
-    },
-  ];
-
   late AnimationController _controller;
+  late Animation<Offset> _slideAnimation;
+  late Animation<double> _fadeAnimation;
   late Animation<Offset> _upSlideAnimation;
-  late Animation<double> _opacityAnimation;
-  late Animation<Offset> _rightSlideAnimation;
 
   @override
   void initState() {
@@ -41,19 +25,14 @@ class _NotificationScreenState extends State<NotificationScreen>
       duration: const Duration(seconds: 1),
       vsync: this,
     );
-    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
-
-    // Slide in from below for list items
-    _upSlideAnimation = Tween<Offset>(begin: Offset(0.0, 2.0), end: Offset.zero)
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    _slideAnimation = Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)
         .animate(_controller);
-
-    _rightSlideAnimation =
-        Tween<Offset>(begin: Offset(-2.0, 1.0), end: Offset.zero)
-            .animate(_controller);
-
     _controller.forward();
+    _upSlideAnimation =
+        Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)
+            .animate(_controller);
   }
-  final FocusNode searchFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -63,137 +42,100 @@ class _NotificationScreenState extends State<NotificationScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-
-      },
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          centerTitle: true,
-          bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(0.2),
-            child: Divider(
-              color: Colors.grey,
-              thickness: 0.5,
-            ),
-          ),
-          backgroundColor: backgroundColor,
-          automaticallyImplyLeading: false,
-          title: SlideTransition(
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        // centerTitle: true,
+        backgroundColor:  backgroundColor, // Apply theme color
+        automaticallyImplyLeading: false,
+        title: SlideTransition(
             position: _upSlideAnimation,
             child: InterCustomText(
+              fontWeight: FontWeight.w600,
+              fontsize: 26,
               text: 'Notifications',
-              textColor: primaryColor,
-            ),
+              textColor:  primaryColor, // Apply theme color
+            )),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1.0),
+          child: Divider(
+            color: greyColor,
+            thickness: 0.2,
           ),
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 20.h,
-            ),
-            SlideTransition(
-              position: _rightSlideAnimation,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 30.w,
-                  ),
-                  CustomSearch(focusNode: searchFocusNode),
-                  SizedBox(
-                    width: 4.w,
-                  ),
-                  Image.asset(
-                    AppImages.FilterIcon,
-                    width: 42.w,
-                    height: 42.h,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 37.w),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text('Date'),
-                      SizedBox(
-                        width: 36.w,
-                      ),
-                      Text('Title'),
-                    ],
-                  ),
-                  Divider(
-                    color: containerBorder,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: FadeTransition(
-                opacity: _opacityAnimation,
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(left: 37.w, top: 5.h),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InterCustomText(
-                                overflow: TextOverflow.ellipsis,
-                                text: items[index]['date']!,
-                                fontsize: 12.sp,
-                                textColor: primaryColor.withOpacity(0.90),
-                              ),
-                              SizedBox(width: 22),
-                              Expanded(
-                                child: InterCustomText(
-                                  overflow: TextOverflow.ellipsis,
-                                  text: items[index]['title']!,
-                                  fontsize: 14.sp,
-                                  textColor: primaryColor,
-                                ),
-                              ),
-                              SizedBox(width: 16),
-                              Container(
-                                width: 48.w,
-                                height: 28.h,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: containerBorder),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: Center(
-                                    child: InterCustomText(
-                                  text: items[index]['duration']!,
-                                  fontsize: 12.sp,
-                                  textColor: primaryColor,
-                                )),
-                              ),
-                              SizedBox(width: 36.w),
-                            ],
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('notifications').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error fetching notifications.'));
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No notifications available.'));
+          }
+
+          final notifications = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: notifications.length,
+            padding: const EdgeInsets.all(16.0),
+            itemBuilder: (context, index) {
+              final data = notifications[index].data() as Map<String, dynamic>;
+              final title = data['title'] ?? 'No Title';
+              final message = data['message'] ?? 'No Message';
+              final date = data['timestamp'] != null
+                  ? DateFormat('dd-MM-yyyy').format(data['timestamp'].toDate())
+                  : 'No Date';
+
+              return SlideTransition(
+                position: _slideAnimation,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                    ),
+                    elevation: 4.0, // Subtle shadow effect
+                    color: Colors.white, // Card background color
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0), // Padding inside the card
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero, // Remove extra padding inside ListTile
+                        title: Text(
+                          title,
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold, // Bold title for emphasis
+                            fontSize: 16.0, // Slightly larger font size for the title
                           ),
-                          if (index != items.length - 1)
-                            Divider(
-                              color: containerBorder,
-                            )
-                        ],
+                        ),
+                        subtitle: Text(
+                          message,
+                          style: TextStyle(
+                            color: Colors.black87, // Darker text for the message
+                            fontSize: 14.0, // Slightly smaller font size for the message
+                          ),
+                        ),
+                        trailing: Text(
+                          date,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey[600], // Slightly darker grey for the date
+                          ),
+                        ),
                       ),
-                    );
-                  },
+                    ),
+                  )
+
                 ),
-              ),
-            ),
-          ],
-        ),
+              );
+            },
+          );
+        },
       ),
     );
   }
