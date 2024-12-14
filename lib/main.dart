@@ -113,6 +113,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _showNotification(RemoteMessage message) async {
+    // Print title and body
+    print('Notification Title: ${message.notification?.title}');
+    print('Notification Body: ${message.notification?.body}');
+
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: AndroidNotificationDetails(
         'your_channel_id', // Make sure to use a unique channel ID
@@ -125,8 +129,8 @@ class _MyAppState extends State<MyApp> {
 
     await flutterLocalNotificationsPlugin.show(
       message.hashCode,
-      message.notification?.title ?? 'Update!',
-      message.notification?.body ?? 'New version will be out soon.',
+      message.notification?.title ?? '',
+      message.notification?.body ?? '',
       platformChannelSpecifics,
       payload: 'data',
     );
