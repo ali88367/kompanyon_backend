@@ -3,7 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:kompanyon_app/widgets/custom_search.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:get/get.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,8 @@ import 'package:kompanyon_app/const/color.dart';
 import 'package:kompanyon_app/const/image.dart';
 import 'package:kompanyon_app/widgets/custom_inter_text.dart';
 import 'package:audioplayers/audioplayers.dart';
+
+import '../../../audio_controller.dart';
 
 class HearScreen extends StatefulWidget {
   const HearScreen({super.key});
@@ -20,7 +23,7 @@ class HearScreen extends StatefulWidget {
 }
 
 class _HearScreenState extends State<HearScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final AudioPlayer audioPlayer = AudioPlayer();
   late AnimationController _controller;
   late Animation<Offset> _upSlideAnimation;
@@ -28,10 +31,12 @@ class _HearScreenState extends State<HearScreen>
   late Animation<Offset> _rightSlideAnimation;
   String? playingUrl; // URL of the currently playing audio
   final FocusNode searchFocusNode = FocusNode();
+  final AudioController audioController = Get.put(AudioController());
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -127,11 +132,33 @@ class _HearScreenState extends State<HearScreen>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      // Stop the audio when the app is not active
+      audioController.stopAudio();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    audioController.onClose(); // Ensure the audio stops
+    Get.delete<AudioController>();
     audioPlayer.dispose();
     _controller.dispose();
     super.dispose();
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.paused ||
+  //       state == AppLifecycleState.detached) {
+  //     // Stop audio playback when the app goes into the background or is closed
+  //     audioController.stopAudio();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +284,7 @@ class _HearScreenState extends State<HearScreen>
                       itemCount: audioFiles.length,
                       itemBuilder: (context, index) {
                         final data =
-                        audioFiles[index].data() as Map<String, dynamic>;
+                            audioFiles[index].data() as Map<String, dynamic>;
                         final title = data['title'] ?? 'Untitled';
                         final duration = data['duration'] ?? 'Unknown';
                         final category = data['Category'] ?? 'Uncategorized';
@@ -271,7 +298,7 @@ class _HearScreenState extends State<HearScreen>
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   InterCustomText(
                                     overflow: TextOverflow.ellipsis,
@@ -293,7 +320,8 @@ class _HearScreenState extends State<HearScreen>
                                     width: 48.w,
                                     height: 28.h,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: containerBorder),
+                                      border:
+                                          Border.all(color: containerBorder),
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: Center(
@@ -307,11 +335,16 @@ class _HearScreenState extends State<HearScreen>
                                   SizedBox(width: 12.w),
                                   GestureDetector(
                                     onTap: () {
-                                      playAudio(url);
+                                      audioController.playPauseAudio(url);
                                     },
-                                    child: Icon(isPlaying
-                                        ? Icons.pause
-                                        : Icons.play_arrow),
+                                    child: Obx(() {
+                                      final isPlaying =
+                                          audioController.playingUrl.value ==
+                                              url;
+                                      return Icon(isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow);
+                                    }),
                                   ),
                                   SizedBox(width: 12.w),
                                 ],

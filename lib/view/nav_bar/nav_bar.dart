@@ -10,7 +10,7 @@ import 'package:kompanyon_app/view/profile/profile.dart';
 import 'package:kompanyon_app/view/search_screen/search_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-import '../../const/image.dart';
+import '../../audio_controller.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -22,6 +22,7 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   late List<Color> _iconColors = [];
   BottomBarController bottomVM = Get.put(BottomBarController());
+  final AudioController audioController = Get.put(AudioController()); // Your audio controller
 
   @override
   void initState() {
@@ -43,39 +44,40 @@ class _BottomBarState extends State<BottomBar> {
     return [
       PersistentBottomNavBarItem(
         onPressed: (context) {
+          // Stop audio when switching tab
+          audioController.stopAudio();
           bottomVM.controller.jumpToTab(0);
         },
-        // title: "Home",
         icon: Icon(Icons.home_rounded),
         activeColorPrimary: primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        onPressed: (context) async {
+        onPressed: (context) {
+          // Stop audio when switching tab
+          audioController.stopAudio();
           bottomVM.controller.jumpToTab(1);
         },
-        // title: "Search",
         icon: Icon(CupertinoIcons.search),
         activeColorPrimary: primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.add_circle),
-        // title: "Go Live",
         activeColorPrimary: primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.notifications),
-        // title: "Alerts",
         activeColorPrimary: primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         onPressed: (c) {
+          // Stop audio when switching tab
+          audioController.stopAudio();
           bottomVM.controller.jumpToTab(4);
         },
-        // title: "Notifications",
         icon: Icon(Icons.person),
         activeColorPrimary: primaryColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -94,44 +96,12 @@ class _BottomBarState extends State<BottomBar> {
       handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true,
       stateManagement: true,
-      // hideNavigationBarWhenKeyboardShows: true,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: backgroundColor,
       ),
-      // popAllScreensOnTapOfSelectedTab: true,
-      // popActionScreens: PopActionScreensType.all,
-      // itemAnimationProperties: ItemAnimationProperties(
-      //   duration: Duration(milliseconds: 200),
-      //   curve: Curves.ease,
-      // ),
-      // screenTransitionAnimation: ScreenTransitionAnimation(
-      //   animateTabTransition: true,
-      //   curve: Curves.ease,
-      //   duration: Duration(milliseconds: 200),
-      // ),
       navBarHeight: 70,
       navBarStyle: NavBarStyle.style6,
-    );
-  }
-}
-
-class PlaceholderWidget extends StatelessWidget {
-  final Color color;
-  final String text;
-
-  const PlaceholderWidget(this.color, this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: color,
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 }
