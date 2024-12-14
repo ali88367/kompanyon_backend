@@ -16,6 +16,9 @@ import 'package:get/get.dart';
 import '../../controller/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'my_journal.dart';
+
+
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -265,6 +268,39 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           InterCustomText(
                             fontsize: 16,
                             text: 'Edit Profile',
+                            textColor: _isDarkMode ? Colors.white : primaryColor, // Apply theme color
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: _isDarkMode ? Colors.white : secondaryText, // Apply theme color
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    height: 0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>  ReflectionResponsesPage()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      alignment: Alignment.centerLeft,
+                      width: double.infinity,
+                      height: 60.h,
+                      decoration: BoxDecoration(color: _isDarkMode ? Colors.black : Colors.white), // Apply theme color
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InterCustomText(
+                            fontsize: 16,
+                            text: 'My Journal',
                             textColor: _isDarkMode ? Colors.white : primaryColor, // Apply theme color
                           ),
                           Icon(
