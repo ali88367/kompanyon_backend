@@ -364,98 +364,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         SizedBox(
                           height: 20.h,
                         ),
-                        const Divider(
-                          height: 0,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15.h, horizontal: 10.w),
-                          decoration: BoxDecoration(color: _isDarkMode ? Colors.black : backgroundColor), // Apply theme color
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _isDarkMode = false;
-                                      _saveTheme(false);
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: !_isDarkMode
-                                            ? primaryColor
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.circular(12)),
-                                    padding: EdgeInsets.symmetric(vertical: 15.h),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.light_mode,
-                                          color: !_isDarkMode
-                                              ? Colors.white
-                                              : primaryText,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        InterCustomText(
-                                          text: 'Light',
-                                          textColor: !_isDarkMode
-                                              ? Colors.white
-                                              : primaryText,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _isDarkMode = true;
-                                      _saveTheme(true);
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: _isDarkMode
-                                            ? primaryColor
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.circular(12)),
-                                    padding: EdgeInsets.symmetric(vertical: 15.h),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.dark_mode,
-                                          color: _isDarkMode
-                                              ? Colors.white
-                                              : primaryText,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        InterCustomText(
-                                          text: 'Dark',
-                                          textColor: _isDarkMode
-                                              ? Colors.white
-                                              : primaryText,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+
                       ],
                     ),
                   ),
@@ -470,8 +379,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               login.logOut();
                             },
                             child: Container(
-                              width: 90,
-                              height: 36,
+                              width: double.infinity,
+                              height: 50.h,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   color: secondarybackgroundColor,
@@ -479,6 +388,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               child: InterCustomText(
                                 text: 'Log Out',
                                 textColor: secondaryText,
+                                fontsize: 18.sp
+                                ,
                               ),
                             ),
                           )),

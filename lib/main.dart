@@ -6,9 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kompanyon_app/Spalsh%20Screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kompanyon_app/theme.dart';
-import 'package:kompanyon_app/view/nav_bar/nav_bar.dart';
 import 'package:kompanyon_app/view/notification_screen/notification.dart';
-import 'User Pathway/uploadAssessment.dart';
 import 'firebase_options.dart';
 import 'helper/bindings.dart';
 

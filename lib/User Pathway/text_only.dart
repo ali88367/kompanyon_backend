@@ -55,19 +55,7 @@ class _TextOnlyState extends State<TextOnly> with SingleTickerProviderStateMixin
             SizedBox(
               height: 40.h,
             ),
-            GestureDetector(
-              onTap: () {
-          //      Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserPathway9() ));
 
-              },
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: primaryColor,
-                    size: 45,
-                  )),
-            ),
             SizedBox(
               height: 60.h,
             ),

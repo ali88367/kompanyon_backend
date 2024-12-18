@@ -123,89 +123,89 @@ class _SearchScreenState extends State<SearchScreen>
                 SizedBox(
                   height: 30.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 37.w),
-
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text('Category'),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Text('Title'),
-                          Spacer(),
-                          Text('Length'),
-                          SizedBox(
-                            width: 30.w,
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        color: containerBorder,
-                      )
-                    ],
-                  ),
-                ),
-                FadeTransition(
-                  opacity: _fadeAnimation,
-
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 37.w, top: 5.h),
-
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InterCustomText(
-                                  overflow: TextOverflow.ellipsis,
-                                  text: items[index]['Category'] ?? "",
-                                  fontsize: 12.sp,
-                                  textColor: blackColor.withOpacity(0.90),
-                                ),
-                                SizedBox(width: 22),
-                                Expanded(
-                                  child: InterCustomText(
-                                    overflow: TextOverflow.ellipsis,
-                                    text: items[index]['title']!,
-                                    fontsize: 14.sp,
-                                    textColor: blackColor,
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                Container(
-                                  width: 48.w,
-                                  height: 28.h,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: containerBorder),
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  child: Center(
-                                      child: InterCustomText(
-                                    text: items[index]['duration']!,
-                                    fontsize: 12.sp,
-                                    textColor: blackColor,
-                                  )),
-                                ),
-                                SizedBox(width: 36.w),
-                              ],
-                            ),
-                            if (index != items.length - 1)
-                              Divider(
-                                color: containerBorder,
-                              )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 37.w),
+                //
+                //   child: Column(
+                //     children: [
+                //       Row(
+                //         children: [
+                //           Text('Category'),
+                //           SizedBox(
+                //             width: 20.w,
+                //           ),
+                //           Text('Title'),
+                //           Spacer(),
+                //           Text('Length'),
+                //           SizedBox(
+                //             width: 30.w,
+                //           ),
+                //         ],
+                //       ),
+                //       Divider(
+                //         color: containerBorder,
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // FadeTransition(
+                //   opacity: _fadeAnimation,
+                //
+                //   child: ListView.builder(
+                //     shrinkWrap: true,
+                //     itemCount: items.length,
+                //     itemBuilder: (context, index) {
+                //       return Padding(
+                //         padding: EdgeInsets.only(left: 37.w, top: 5.h),
+                //
+                //         child: Column(
+                //           children: [
+                //             Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 InterCustomText(
+                //                   overflow: TextOverflow.ellipsis,
+                //                   text: items[index]['Category'] ?? "",
+                //                   fontsize: 12.sp,
+                //                   textColor: blackColor.withOpacity(0.90),
+                //                 ),
+                //                 SizedBox(width: 22),
+                //                 Expanded(
+                //                   child: InterCustomText(
+                //                     overflow: TextOverflow.ellipsis,
+                //                     text: items[index]['title']!,
+                //                     fontsize: 14.sp,
+                //                     textColor: blackColor,
+                //                   ),
+                //                 ),
+                //                 SizedBox(width: 16),
+                //                 Container(
+                //                   width: 48.w,
+                //                   height: 28.h,
+                //                   decoration: BoxDecoration(
+                //                     border: Border.all(color: containerBorder),
+                //                     borderRadius: BorderRadius.circular(8.r),
+                //                   ),
+                //                   child: Center(
+                //                       child: InterCustomText(
+                //                     text: items[index]['duration']!,
+                //                     fontsize: 12.sp,
+                //                     textColor: blackColor,
+                //                   )),
+                //                 ),
+                //                 SizedBox(width: 36.w),
+                //               ],
+                //             ),
+                //             if (index != items.length - 1)
+                //               Divider(
+                //                 color: containerBorder,
+                //               )
+                //           ],
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
               ],
             ),
           )
