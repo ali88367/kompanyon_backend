@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -156,8 +157,18 @@ class _BottomBarState extends State<BottomBar> {
                 final gratitude = _gratitudeController.text;
                 final meditation = _meditationController.text;
 
+                // Get the current user's UID
+                final userId = FirebaseAuth.instance.currentUser?.uid;
+
+                if (userId == null) {
+                  // Handle case where user is not logged in
+                  print('User not logged in');
+                  return;
+                }
+
                 // Prepare data to save in Firestore
                 final reflectionData = {
+                  'uid': userId,  // Add user ID to the reflection data
                   'mood': selectedMood,
                   'feeling': feeling,
                   'gratitude': gratitude,
@@ -193,6 +204,7 @@ class _BottomBarState extends State<BottomBar> {
       },
     );
   }
+
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [

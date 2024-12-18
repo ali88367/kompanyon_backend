@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kompanyon_app/const/color.dart';
@@ -8,9 +9,11 @@ class ReflectionResponsesPage extends StatelessWidget {
   const ReflectionResponsesPage({Key? key}) : super(key: key);
 
   Stream<QuerySnapshot> _fetchReflections() {
+    String currentUserUid = FirebaseAuth.instance.currentUser!.uid;  // Get the current user's UID
+
     return FirebaseFirestore.instance
         .collection('reflections')
-        .orderBy('timestamp', descending: true)
+        .where('uid', isEqualTo: currentUserUid)  // Filter reflections by current user's UID
         .snapshots();
   }
 
@@ -32,6 +35,17 @@ class ReflectionResponsesPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            // Print the error to the terminal
+            print('Error: ${snapshot.error}');
+            return Center(
+              child: InterCustomText(
+                text: 'An error occurred: ${snapshot.error}',
+                textColor: Colors.red,
+                fontsize: 18.sp,
+              ),
+            );
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(
