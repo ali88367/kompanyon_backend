@@ -230,6 +230,7 @@ class _BottomBarState extends State<BottomBar> {
       ),
       PersistentBottomNavBarItem(
         onPressed: (context) {
+          audioController.stopAudio();
           _showReflectionDialog();
         },
         icon: Icon(Icons.add_circle),
@@ -256,21 +257,23 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: bottomVM.controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      backgroundColor: backgroundColor,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        colorBehindNavBar: backgroundColor,
+    return Scaffold(
+      body: PersistentTabView(
+        context,
+        controller: bottomVM.controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        backgroundColor: backgroundColor,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: backgroundColor,
+        ),
+        navBarHeight: 70,
+        navBarStyle: NavBarStyle.style6,
       ),
-      navBarHeight: 70,
-      navBarStyle: NavBarStyle.style6,
     );
   }
 }

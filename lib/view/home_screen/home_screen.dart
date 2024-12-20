@@ -123,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'Read',
       'Connect',
       'Help',
+   //   'Challenge',
     ];
     return Scaffold(
       backgroundColor: backgroundColor,

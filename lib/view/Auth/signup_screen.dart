@@ -1,20 +1,26 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kompanyon_app/const/color.dart';
 import 'package:kompanyon_app/const/image.dart';
 import 'package:kompanyon_app/controller/login_controller.dart';
+import 'package:kompanyon_app/view/home_screen/components/hear_screen.dart';
+import 'package:kompanyon_app/view/nav_bar/nav_bar.dart';
 import 'package:kompanyon_app/widgets/custom_button.dart';
 import 'package:kompanyon_app/widgets/custom_inter_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kompanyon_app/widgets/custom_textfield.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:localstorage/localstorage.dart';
 import '../../controller/signup_contoller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -24,6 +30,11 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  final LocalStorage storage = localStorage;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   File? _profileImage;
   Future<void> _selectImage() async {
@@ -41,6 +52,8 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
       Get.put(SignupController()); // Initialize the controller
   final LoginController loginController =
       Get.put(LoginController()); // Initialize the controller
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // Focus nodes for text fields
   final FocusNode _emailFocusNode = FocusNode();
@@ -85,6 +98,103 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
+  Future<String> uploadProfileImage(String userId, File profileImage) async {
+    try {
+      Reference storageRef = _storage.ref().child('profileImages/$userId.jpg');
+      UploadTask uploadTask = storageRef.putFile(profileImage);
+
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading profile image: $e');
+      return '';
+    }
+  }
+  Future<User?> signInWithGoogle(File? profileImage) async {
+    try {
+      // Trigger the Google Authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      // Ensure fcmToken is fetched after the Google sign-in process
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+      if (googleUser == null) {
+        // User canceled the login
+        return null;
+      }
+
+      // Obtain the Google authentication details
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Create a new credential
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the Google credentials
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        print("uid: ${user.uid}");
+
+        String? profileImageUrl = user.photoURL; // Use Google profile image URL if available
+
+        if (profileImage == null && profileImageUrl == null) {
+          // If the user doesn't have a profile image from Google and no custom image is passed, return
+          Get.snackbar('Error', "Profile image is required.",
+              backgroundColor: whiteColor, colorText: Colors.black);
+          return null;
+        }
+
+        if (profileImage != null) {
+          // Upload profile image to Firebase Storage
+          profileImageUrl = await uploadProfileImage(user.uid, profileImage);
+        }
+
+        // Ensure FCM token is not null before saving to Firestore
+        if (fcmToken != null) {
+          await _firestore.collection('userDetails').doc(user.uid).set(
+            {
+              'name': user.displayName ?? '',
+              'email': user.email,
+              'password': '', // No password needed for Google sign-in
+              'createAt': Timestamp.now(),
+              'profileImageUrl': profileImageUrl,
+              'role': 'User',
+              'uid': user.uid,
+              'fcmToken': fcmToken, // Add the fcmToken here
+            },
+            SetOptions(merge: true),
+          ).then((val) {
+            Get.to(BottomBar());
+            debugPrint("user doc created");
+          });
+        } else {
+          print("FCM Token is null");
+        }
+      }
+
+      return user;
+    } catch (e) {
+      print("Google Sign-In Error: $e");
+      return null;
+    }
+  }
+
+  // Sign out from Google
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+  }
+
+  // Check if the user is already signed in
+  Future<User?> checkCurrentUser() async {
+    final User? user = _auth.currentUser;
+    return user;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -423,7 +533,23 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                                     text: 'Forgot Password?',
                                     textColor: primaryColor,
                                     fontsize: 14.sp,
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      // You can pass the profile image if you have one, or pass null
+                                      await signInWithGoogle(null);  // Pass null if no profile image is available at this point
+                                    },
+                                    child: InterCustomText(
+                                      text: 'Sign in with google',
+                                      textColor: primaryColor,
+                                      fontsize: 14.sp,
+                                    ),
                                   )
+
+
                                 ],
                               ),
                       ],

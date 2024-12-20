@@ -7,6 +7,7 @@ import 'package:kompanyon_app/Spalsh%20Screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kompanyon_app/theme.dart';
 import 'package:kompanyon_app/view/notification_screen/notification.dart';
+import 'package:localstorage/localstorage.dart';
 import 'firebase_options.dart';
 import 'helper/bindings.dart';
 
@@ -19,6 +20,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseMessaging.instance.requestPermission();
+  await initLocalStorage();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

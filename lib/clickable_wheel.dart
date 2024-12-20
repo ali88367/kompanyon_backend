@@ -4,7 +4,10 @@ import 'package:kompanyon_app/User%20Pathway/user_pathway1.dart';
 import 'package:kompanyon_app/User%20Pathway/user_pathwayBegin.dart'; // Import UserPathway1
 import 'package:kompanyon_app/const/color.dart';
 import 'package:kompanyon_app/view/Leadership_screens/Leadership.dart';
+import 'package:kompanyon_app/view/home_screen/components/challenges.dart';
+import 'package:kompanyon_app/view/home_screen/components/connect_screen.dart';
 import 'package:kompanyon_app/view/home_screen/components/hear_screen.dart';
+import 'package:kompanyon_app/view/home_screen/components/help_section.dart';
 import 'package:kompanyon_app/view/home_screen/components/read_screen.dart';
 import 'package:kompanyon_app/view/home_screen/home_screen.dart';
 import 'package:kompanyon_app/view/nav_bar/nav_bar.dart';
@@ -29,17 +32,14 @@ class _ClickableWheelState extends State<ClickableWheel> {
   // Map titles to screen widgets
   final Map<String, Widget> _screenMap = {
     'Hear': HearScreen(),
-    'Learn': Leadership(),
+    'Learn': ChallengePage(),
+   // 'Learn': Leadership(),
     'Your Pathway': UserPathwayBegin(),
     'Read':ReadScreen(),
-    // 'Stress Relief': UserPathway2(),
-    // 'Other (please specify)': InputMessage1(),
-    // 'Never': Slider3(),
-    // "Don't know how to start": UserPathway5(),
-    // 'Guided meditation': UserPathway6(),
-    // 'Reading': UserPathway7(),
-    // 'Short Daily Practices': InputMessage2(),
-    // 'Yes': TextOnly(),
+    'Connect':ConnectScreen(),
+    'Help':HelpSection(),
+    //'Challenge':ChallengePage(),
+
     'Focus & Productivity': BottomBar(),
   };
 
