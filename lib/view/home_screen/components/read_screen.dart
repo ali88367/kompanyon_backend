@@ -23,15 +23,7 @@ class _ReadScreenState extends State<ReadScreen> {
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                color: primaryColor,
-                size: 35,
-              )),
+
           centerTitle: true,
           toolbarHeight: 80.h,
           backgroundColor: backgroundColor,

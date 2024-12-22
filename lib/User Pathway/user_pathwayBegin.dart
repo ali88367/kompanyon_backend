@@ -65,23 +65,9 @@ class _UserPathwayBeginState extends State<UserPathwayBegin>
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+
           SizedBox(
-            height: 40.h,
-          ),
-          GestureDetector(
-            onTap: () {
-           Navigator.pop(context);
-            },
-            child: Align(
-                alignment: Alignment.topLeft,
-                child: Icon(
-                  Icons.arrow_back,
-                  color: primaryColor,
-                  size: 45,
-                )),
-          ),
-          SizedBox(
-            height: 60.h,
+            height: 150.h,
           ),
           FadeTransition(
             opacity: _fadeAnimation,

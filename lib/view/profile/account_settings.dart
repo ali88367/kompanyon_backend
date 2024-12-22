@@ -19,24 +19,13 @@ class _AccountSettingsState extends State<AccountSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: backgroundColor,
-        leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: primaryColor,
-              size: 35,
-            )),
-      ),
+
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height:  70.h),
             InterCustomText(
               text: "Account Settings",
               textColor: primaryColor,

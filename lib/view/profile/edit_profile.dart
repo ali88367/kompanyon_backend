@@ -41,19 +41,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: backgroundColor,
-        leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              color: primaryColor,
-              size: 35,
-            )),
-      ),
+
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -63,6 +51,7 @@ class _EditProfileState extends State<EditProfile> {
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               children: [
+                SizedBox(height: 55.h,),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: InterCustomText(

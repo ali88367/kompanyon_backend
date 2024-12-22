@@ -22,6 +22,7 @@ class ReflectionResponsesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: backgroundColor,
         title: InterCustomText(
           text: 'Reflection Responses',

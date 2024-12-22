@@ -124,27 +124,9 @@ class _UserPathway1State extends State<UserPathway1>
       appBar: AppBar(
         flexibleSpace: SafeArea(
           child: Row(
+           // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    if (_currentPage <= 0) {
-                      Navigator.pop(context);
-                    } else {
-                      pageController.previousPage(
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
+SizedBox(width: 20.w,),
               InterCustomText(
                 text: "Pathway Assessment",
                 textColor: primaryColor,

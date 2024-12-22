@@ -151,14 +151,7 @@ class _HearScreenState extends State<HearScreen>
     super.dispose();
   }
 
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.paused ||
-  //       state == AppLifecycleState.detached) {
-  //     // Stop audio playback when the app goes into the background or is closed
-  //     audioController.stopAudio();
-  //   }
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -175,16 +168,7 @@ class _HearScreenState extends State<HearScreen>
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 30,
-                ),
-              ),
-              Spacer(),
+
               SlideTransition(
                 position: _upSlideAnimation,
                 child: const InterCustomText(
@@ -192,10 +176,7 @@ class _HearScreenState extends State<HearScreen>
                   textColor: primaryColor,
                 ),
               ),
-              SizedBox(
-                width: 12,
-              ),
-              Spacer(),
+
             ],
           ),
           bottom: const PreferredSize(
