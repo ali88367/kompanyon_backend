@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kompanyon_app/Spalsh%20Screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kompanyon_app/theme.dart';
+import 'package:kompanyon_app/view/home_screen/home_screen.dart';
 import 'package:kompanyon_app/view/notification_screen/notification.dart';
+import 'package:kompanyon_app/view/search_screen/search_screen.dart';
 import 'package:localstorage/localstorage.dart';
 import 'firebase_options.dart';
 import 'helper/bindings.dart';
@@ -151,6 +153,11 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(430, 932),
         builder: (_, child) {
           return GetMaterialApp(
+            routes: {
+              '/home': (context) => HomeScreen(),
+              '/search': (context) => SearchScreen(),
+              // Add other routes here
+            },
             theme: ThemeManager.currentTheme,
             debugShowCheckedModeBanner: false,
             home: SplashScreen(),

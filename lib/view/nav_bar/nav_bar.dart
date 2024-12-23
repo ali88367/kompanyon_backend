@@ -213,6 +213,10 @@ class _BottomBarState extends State<BottomBar> {
           // Stop audio when switching tab
           audioController.stopAudio();
           bottomVM.controller.jumpToTab(0);
+          Navigator.of(context!).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+                (route) => true,
+          );
         },
         icon: Icon(Icons.home_rounded),
         activeColorPrimary: primaryColor,
