@@ -60,11 +60,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAkXQDz2X3822F0Iu5Li71CcelEZPoRPRY',
-    appId: '1:552938282575:ios:cef11eaf71a7f0d26d943a',
+    appId: '1:552938282575:ios:8debc95e7c2590536d943a',
     messagingSenderId: '552938282575',
     projectId: 'kompanyonapp-c60f8',
     storageBucket: 'kompanyonapp-c60f8.appspot.com',
-    iosBundleId: 'com.example.kompanyonApp',
+    androidClientId: '552938282575-985blg0vemt4n56jiumbattm8g5org9a.apps.googleusercontent.com',
+    iosClientId: '552938282575-techueru8pnhubis1j7ku0l7d3ea9m0d.apps.googleusercontent.com',
+    iosBundleId: 'com.Kompanyon.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
